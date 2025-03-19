@@ -11,14 +11,21 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .elements {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  background-color: rgb(203, 203, 203);
-  padding: 2rem;
-  gap: 1.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  /* width: 100%;
+  height: 100%; */
+  /* display: grid;
+  grid-template-columns: repeat(10, 1fr); */
+  /* background-color: rgb(203, 203, 203); */
+  /* padding: 2rem; */
+  gap: 1rem;
+  perspective: 100px;
+  
 }
 
 .el {
@@ -28,8 +35,20 @@ body {
   padding: 16px;
   width: 25px;
   height: 25px;
-  background-color: rgb(190, 190, 190);
+  /* background-color: rgb(190, 190, 190); */
   font-size: 1.2rem;
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  /* animation: move 1s linear infinite alternate; */
+}
+
+@keyframes move {
+  0% {
+    transform: translateZ(0px);
+  }
+  100% {
+    transform: translateZ(2px);
+  }
 }
 
 .el:hover {

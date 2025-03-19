@@ -24,10 +24,10 @@ let waveOffset = 0;
 const updateElementsScale = () => {
   const maxDistance = 200; // threshold, change later
   const minScale = 1;
-  const maxScale = 1.6;
+  const maxScale = 3;
 
-  const minAngle = -180;
-  const maxAngle = 180;
+  const minAngle = 0;
+  const maxAngle = 0;
 
   const minBrightness = 0.9;   
   const maxBrightness = 1;   
@@ -58,7 +58,7 @@ const updateElementsScale = () => {
     const waveX = Math.sin((waveOffset + index) * 0.2) * waveStrength;
     const waveY = Math.cos((waveOffset + index) * 0.2) * waveStrength;
     
-    el.style.transform = `scale(${scaleFactor}) rotate(-${angleFactor}deg)`;
+    el.style.transform = `scale(${scaleFactor}) rotate(${angleFactor}deg)`;
     el.style.filter = `brightness(${brightnessFactor})`;
     
     // const hue = (hueShift + index * 7) % 360;
@@ -93,7 +93,7 @@ window.onload = () => {
     const elementsHolder = document.getElementById('all-elements');
     const elements = []
 
-    for (let i = 0; i < 144 ; i++) {
+    for (let i = 0; i < 500 ; i++) {
       const span = document.createElement('span');
       const randomChar = getRandomLetter(1);
       span.className = `el text_${randomChar}`
