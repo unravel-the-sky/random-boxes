@@ -3,6 +3,59 @@ body {
   margin: 0;
   height: 100vh;
   background-color: black;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 240px;
+}
+
+#glowing-cursor {
+  background-color: white;
+  /* background: linear-gradient(to right, aquamarine, purple); */
+  width: 250px;
+  height: 250px;
+
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+
+  position: absolute;
+  align-self: center;
+  justify-self: center;
+
+  /* animation: rotate 5s linear infinite forwards; */
+  animation: grow 2s ease-in 0.1s forwards;
+
+  filter: blur(100px) opacity(0.5);
+}
+
+@keyframes grow {
+  0% {
+    scale: 0;
+    opacity: 0;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+#blur {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  /* backdrop-filter: blur(200px); */
 }
 
 .elements-holder {
@@ -13,6 +66,9 @@ body {
   align-items: center;
   flex-direction: column;
   overflow: hidden;
+  transform: translateZ(-100px);
+  opacity: 0;
+  /* z-index: 3; */
 }
 
 .elements {

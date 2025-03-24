@@ -43,6 +43,15 @@ const updateElementsScale = () => {
 
     // Combine both effects
     el.style.transform = `scale(${baseScale * cursorScale})`;
+
+    // el.animate({
+    //   scale: `${baseScale * cursorScale}`
+    // }, {duration: 100})
+
+    // glowingCursor.animate({
+    //   left: `${mouse.x}px`,
+    //   top: `${mouse.y}px`
+    // }, { duration: 3000})
   });
 }
 
@@ -118,14 +127,48 @@ const animateCharSize = (elements) => {
   }, 250);
 }
 
+const mainHolder = document.getElementById('main');
+
+let scale = 0.5;
+const zoom = (event) => {
+  event.preventDefault();
+
+  scale += event.deltaY * -0.01;
+
+  // Restrict scale
+  scale = Math.min(Math.max(0.5, scale), 2);
+
+  // Apply scale transform
+  // mainHolder.style.transform = `scale(${scale})`;
+  mainHolder.animate({
+    transform: `scale(${scale})`,
+    opacity: scale - 0.5
+  }, { duration: 300, fill: 'forwards' })
+}
+document.onwheel = zoom;
+
+const glowingCursor = document.getElementById('glowing-cursor')
+
 window.onmousemove = (event) => {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
+
+  glowingCursor.style.left = `${mouse.x}px`
+  glowingCursor.style.top = `${mouse.y}px`
+
+  // glowingCursor.animate({
+  //   left: `${mouse.x}px`,
+  //   top: `${mouse.y}px`
+  // }, { duration: 1000, fill: 'forwards'})
 
   // console.log(`x: ${mouse.x} y: ${mouse.y}`)
 
   updateElementsScale();
   // highlightColumn();
+}
+
+window.onscroll = (event) => {
+  console.log(event)
 }
 
 window.onload = () => {
