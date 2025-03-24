@@ -20,17 +20,12 @@ const mouse = {
 }
 let hueShift = 0;
 let waveOffset = 0;
+let lastHoveredCol = -1;
 
 const updateElementsScale = () => {
-  const maxDistance = 200; // threshold, change later
+  const maxDistance = 210; // threshold, change later
   const minScale = 1;
   const maxScale = 3;
-
-  const minAngle = 0;
-  const maxAngle = 0;
-
-  const minBrightness = 0.9;   
-  const maxBrightness = 1;   
 
   const elements = document.querySelectorAll('.el');
   elements.forEach((el, index) => {
@@ -38,32 +33,51 @@ const updateElementsScale = () => {
     const elCenterX = rect.left + rect.width / 2;
     const elCenterY = rect.top + rect.height / 2;
 
+    const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY) ; 
+
+    // Cursor scaling effect
+    const cursorScale = Math.max(minScale, maxScale - (distance / maxDistance) * (maxScale - minScale));
+
+    // Get base animation scale
+    const baseScale = parseFloat(el.dataset.baseScale) || 1;
+
+    // Combine both effects
+    el.style.transform = `scale(${baseScale * cursorScale})`;
+  });
+}
+
+const THRESHOLD = 20;
+const GRID_SIZE = 40;
+
+const highlightColumn = () => {
+  const elements = document.querySelectorAll('.el');
+  let colIndex = -1;
+
+  elements.forEach((el, index) => {
+    const rect = el.getBoundingClientRect();
+    const elCenterX = rect.left + rect.width / 2;
+    const elCenterY = rect.top + rect.height / 2;
     const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY);
 
-    const scaleFactor = Math.max(minScale, maxScale - (distance / maxDistance));
-
-    const angleStrength = (maxAngle - minAngle) / maxDistance; 
-    const angleFactor = Math.max(minAngle, Math.min(maxAngle, minAngle + (maxAngle - minAngle) * (1 - distance / maxDistance)));
-
-    // Add some randomness or directionality
-    const rotationDirection = (mouse.x < elCenterX) ? -1 : 1; 
-    const finalAngle = angleFactor * rotationDirection;
-
-    // const angleFactor = Math.max(minAngle, maxAngle - (distance / maxDistance));
-    // console.log(angleFactor)
-
-    const brightnessFactor = Math.max(minBrightness, maxBrightness - (distance / maxDistance) * (maxBrightness - minBrightness));
-
-    const waveStrength = Math.max(5, 20 - (distance / maxDistance) * 20); // Stronger waves when closer
-    const waveX = Math.sin((waveOffset + index) * 0.2) * waveStrength;
-    const waveY = Math.cos((waveOffset + index) * 0.2) * waveStrength;
-    
-    el.style.transform = `scale(${scaleFactor}) rotate(${angleFactor}deg)`;
-    el.style.filter = `brightness(${brightnessFactor})`;
-    
-    // const hue = (hueShift + index * 7) % 360;
-    // el.style.backgroundColor = `hsl(${hue}, 100%, ${brightnessFactor}%)`
+    if (distance < THRESHOLD) {
+      colIndex = index % GRID_SIZE;
+    }
   });
+
+  if (colIndex !== -1 && colIndex !== lastHoveredCol) {
+    if (lastHoveredCol !== -1) {
+      for (let i = lastHoveredCol ; i < elements.length ; i += GRID_SIZE) {
+        elements[i].style.backgroundColor = '';
+      }
+    }
+
+    for (let i = colIndex ; i < elements.length ; i += GRID_SIZE) {
+      // console.log('i shall be colored: ', colIndex)
+      elements[i].style.backgroundColor = 'rgba(50, 50, 50)'
+    }
+
+    lastHoveredCol = colIndex;
+  }
 }
 
 const updateLetters = (elements) => {
@@ -80,6 +94,30 @@ const updateLetters = (elements) => {
   });
 };
 
+const animateCharSize = (elements) => {
+  let scaleDir = 1;
+
+  elements.forEach(el => {
+    let base = parseFloat(el.dataset.base) || 1;
+
+    if (scaleDir === 1) {
+      base += 0.05;
+      if (base > 2) scaleDir = -1;
+    } else {
+      base -= 0.05;
+      if (base < 1.2) scaleDir = 1;
+    }
+
+    el.dataset.base = base.toFixed(3);
+
+    // console.log(base.toFixed(3))
+
+    // el.style.transform = `scale(${base.toFixed(3)})`;
+  })
+  setInterval(() => {
+  }, 250);
+}
+
 window.onmousemove = (event) => {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
@@ -87,13 +125,14 @@ window.onmousemove = (event) => {
   // console.log(`x: ${mouse.x} y: ${mouse.y}`)
 
   updateElementsScale();
+  // highlightColumn();
 }
 
 window.onload = () => {
     const elementsHolder = document.getElementById('all-elements');
     const elements = []
 
-    for (let i = 0; i < 500 ; i++) {
+    for (let i = 0; i < 200 ; i++) {
       const span = document.createElement('span');
       const randomChar = getRandomLetter(1);
       span.className = `el text_${randomChar}`
@@ -108,6 +147,74 @@ window.onload = () => {
 
     setInterval(() => {
       // updateLetters(elements)
-      waveOffset += 0.1
-    }, 100);
+      // waveOffset += 0.1
+      // highlightColumn(elements)
+      // animateCharSize(elements);
+    }, 10);
 }
+
+
+
+
+
+
+// const updateElementsScale = () => {
+//   const maxDistance = 210; // threshold, change later
+//   const minScale = 1;
+//   const maxScale = 3;
+
+//   const fontWeight = 200;
+
+//   const minAngle = 0;
+//   const maxAngle = 0;
+
+//   const minBrightness = 0.95;   
+//   const maxBrightness = 1;   
+
+//   const elements = document.querySelectorAll('.el');
+//   elements.forEach((el, index) => {
+//     const rect = el.getBoundingClientRect();
+//     const elCenterX = rect.left + rect.width / 2;
+//     const elCenterY = rect.top + rect.height / 2;
+
+//     const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY) ; 
+
+//     const scaleFactor = Math.max(minScale, maxScale - (distance / maxDistance));
+
+//     const angleStrength = (maxAngle - minAngle) / maxDistance; 
+//     const angleFactor = Math.max(minAngle, Math.min(maxAngle, minAngle + (maxAngle - minAngle) * (1 - distance / maxDistance)));
+
+//     // Add some randomness or directionality
+//     const rotationDirection = (mouse.x < elCenterX) ? -1 : 1; 
+//     const finalAngle = angleFactor * rotationDirection;
+
+//     // const angleFactor = Math.max(minAngle, maxAngle - (distance / maxDistance));
+//     // console.log(angleFactor)
+
+//     const brightnessFactor = Math.max(minBrightness, maxBrightness - (distance / maxDistance) * (maxBrightness - minBrightness));
+
+//     const waveStrength = Math.max(5, 20 - (distance / maxDistance) * 20); // Stronger waves when closer
+//     const waveX = Math.sin((waveOffset + index) * 0.2) * waveStrength;
+//     const waveY = Math.cos((waveOffset + index) * 0.2) * waveStrength;
+
+//     // Cursor scaling effect
+//     const cursorScale = Math.max(minScale, maxScale - (distance / maxDistance) * (maxScale - minScale));
+
+//     // Get base animation scale
+//     const baseScale = parseFloat(el.dataset.baseScale) || 1;
+
+//     const fontWeightVal = Math.round((fontWeight * cursorScale) % 100) * 10;
+//     // console.log(fontWeightVal)
+
+//     // el.style.fontWeight = fontWeightVal;
+
+//     // Combine both effects
+//     el.style.transform = `scale(${baseScale * cursorScale})`;
+    
+//     // el.style.transform = `scale(${scaleFactor}) rotate(${angleFactor}deg)`;
+//     el.style.filter = `brightness(${brightnessFactor})`;
+    
+//     // const hue = (hueShift + index * 7) % 360;
+//     // el.style.backgroundColor = `hsl(${hue}, 100%, ${brightnessFactor}%)`
+//   });
+// }
