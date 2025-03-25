@@ -43,20 +43,10 @@ const updateElementsScale = () => {
 
     // Combine both effects
     el.style.transform = `scale(${baseScale * cursorScale})`;
-
-    // el.animate({
-    //   scale: `${baseScale * cursorScale}`
-    // }, {duration: 100})
-
-    // glowingCursor.animate({
-    //   left: `${mouse.x}px`,
-    //   top: `${mouse.y}px`
-    // }, { duration: 3000})
   });
 }
 
 const THRESHOLD = 20;
-const GRID_SIZE = 40;
 
 const highlightColumn = () => {
   const elements = document.querySelectorAll('.el');
@@ -171,22 +161,67 @@ window.onscroll = (event) => {
   console.log(event)
 }
 
+const GRID_SIZE = 15; // 10x10 grid
+const MESSAGE_ROWS = {
+  2: "WELCOME",
+  6: "TO",
+  7: "MY",
+  10: "WORLD"
+};
+
 window.onload = () => {
     const elementsHolder = document.getElementById('all-elements');
-    const elements = []
+    const elements = [];
+    const totalCells = GRID_SIZE * GRID_SIZE;
+    // const messageStartIndex = Math.floor((totalCells - MESSAGE.length) / 2); // Center the message
 
-    for (let i = 0; i < 200 ; i++) {
-      const span = document.createElement('span');
-      const randomChar = getRandomLetter(1);
-      span.className = `el text_${randomChar}`
-      const text = document.createTextNode(randomChar);
-      span.appendChild(text);
-      span.onclick = () => {
-        span.style.visibility = 'hidden'
+    for (let row = 0; row < GRID_SIZE; row++) {
+      for (let col = 0; col < GRID_SIZE; col++) {
+          const index = row * GRID_SIZE + col;
+          const span = document.createElement('span');
+          span.className = "el";
+          
+          if (MESSAGE_ROWS[row]) {
+              const word = MESSAGE_ROWS[row];
+              const startCol = Math.floor((GRID_SIZE - word.length) / 2); // Centering the word
+              
+              if (col >= startCol && col < startCol + word.length) {
+                  span.textContent = word[col - startCol];
+                  span.style.fontSize = "5rem"; // Larger font for message
+                  span.style.fontWeight = "bold";
+              } else {
+                  span.textContent = getRandomLetter(1);
+              }
+          } else {
+              span.textContent = getRandomLetter(1);
+          }
+
+          elementsHolder.appendChild(span);
+          elements.push(span);
       }
-      elements.push(span);
-      elementsHolder.appendChild(span);
-    }
+  }
+
+
+    // for (let i = 0; i < totalCells ; i++) {
+    //   const span = document.createElement('span');
+    //   const randomChar = getRandomLetter(1);
+    //   span.className = `el text_${randomChar}`
+
+    //   // Place the message in the grid
+    //   if (i >= messageStartIndex && i < messageStartIndex + MESSAGE.length) {
+    //       span.textContent = MESSAGE[i - messageStartIndex]; // Insert message letters
+    //   } else {
+    //       span.textContent = getRandomLetter(1); // Random letters elsewhere
+    //   }
+
+    //   // const text = document.createTextNode(randomChar);
+    //   // span.appendChild(text);
+    //   span.onclick = () => {
+    //     span.style.visibility = 'hidden'
+    //   }
+    //   elements.push(span);
+    //   elementsHolder.appendChild(span);
+    // }
 
     setInterval(() => {
       // updateLetters(elements)

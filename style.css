@@ -24,8 +24,7 @@ body {
   align-self: center;
   justify-self: center;
 
-  /* animation: rotate 5s linear infinite forwards; */
-  animation: grow 2s ease-in 0.1s forwards;
+  animation: rotate 5s linear 1s ease-in-out forwards, grow 2s ease-in 0.1s forwards;
 
   filter: blur(100px) opacity(0.5);
 }
@@ -42,11 +41,11 @@ body {
 }
 
 @keyframes rotate {
-  0% {
-    rotate: 0deg;
+  0%, 100% {
+    transform: translateZ(0px);
   }
-  100% {
-    rotate: 360deg;
+  50% {
+    transform: translateZ(150px);
   }
 }
 
@@ -74,7 +73,7 @@ body {
 .elements {
   display: flex;
   flex-wrap: wrap;
-  width: 1000px;
+  width: 700px;
   perspective: 100px;
   font-family: "Fredericka the Great", serif;
   font-weight: 200;
@@ -88,13 +87,13 @@ body {
   /* padding: 16px; */
   color: rgb(175, 175, 175);
   font-size: 3rem;
-  padding-bottom: 2rem;
-  letter-spacing: 2rem;
+  /* padding-bottom: 2rem; */
+  letter-spacing: 16px;
+  line-height: 40px;
   /* width: 25px; */
-  height: 25px;
+  /* height: 25px; */
   transform-origin: 50% 50%;
   transform-style: preserve-3d;
-  /* animation: move 1s linear infinite alternate; */
 }
 
 @keyframes move {
