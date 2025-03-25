@@ -87,7 +87,7 @@ const updateLetters = (elements) => {
       const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY);
 
       // Only update letter if cursor is NOT near the center
-      if (distance > 40) {
+      if (distance > 40 && el.dataset.isfixed !== 'true') {
           el.textContent = makeRandomLetter(1);
       }
   });
@@ -189,6 +189,7 @@ window.onload = () => {
                   span.textContent = word[col - startCol];
                   span.style.fontSize = "5rem"; // Larger font for message
                   span.style.fontWeight = "bold";
+                  span.dataset.isfixed = 'true';
               } else {
                   span.textContent = getRandomLetter(1);
               }
@@ -228,7 +229,7 @@ window.onload = () => {
       // waveOffset += 0.1
       // highlightColumn(elements)
       // animateCharSize(elements);
-    }, 10);
+    }, 200);
 }
 
 
