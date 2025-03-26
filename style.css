@@ -24,17 +24,17 @@ body {
   align-self: center;
   justify-self: center;
 
-  animation: rotate 5s linear 1s ease-in-out forwards, grow 2s ease-in 0.1s forwards;
+  animation: grow 10s ease-in 0.1s forwards infinite;
 
   filter: blur(100px) opacity(0.5);
 }
 
 @keyframes grow {
-  0% {
-    scale: 0;
-    opacity: 0;
+  0%, 100% {
+    scale: 0.5;
+    opacity: 0.5;
   }
-  100% {
+  50% {
     scale: 1;
     opacity: 1;
   }
@@ -65,15 +65,27 @@ body {
   align-items: center;
   flex-direction: column;
   overflow: hidden;
-  transform: translateZ(-100px);
+  /* transform: translateZ(10px); */
+  animation: reveal 1.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 1s forwards;
   opacity: 0;
   /* z-index: 3; */
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateZ(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(10px);
+  }
 }
 
 .elements {
   display: flex;
   flex-wrap: wrap;
-  width: 700px;
+  width: 800px;
   perspective: 100px;
   font-family: "Fredericka the Great", serif;
   font-weight: 200;
@@ -86,10 +98,10 @@ body {
   /* border: 1px solid green; */
   /* padding: 16px; */
   color: rgb(175, 175, 175);
-  font-size: 3rem;
+  font-size: 4rem;
   /* padding-bottom: 2rem; */
-  letter-spacing: 16px;
-  line-height: 40px;
+  letter-spacing: 35px;
+  line-height: 65px;
   /* width: 25px; */
   /* height: 25px; */
   transform-origin: 50% 50%;

@@ -1,6 +1,6 @@
 const makeRandomLetter = (length) => {
     let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     let counter = 0;
     while (counter < length) {
@@ -21,30 +21,6 @@ const mouse = {
 let hueShift = 0;
 let waveOffset = 0;
 let lastHoveredCol = -1;
-
-const updateElementsScale = () => {
-  const maxDistance = 210; // threshold, change later
-  const minScale = 1;
-  const maxScale = 3;
-
-  const elements = document.querySelectorAll('.el');
-  elements.forEach((el, index) => {
-    const rect = el.getBoundingClientRect();
-    const elCenterX = rect.left + rect.width / 2;
-    const elCenterY = rect.top + rect.height / 2;
-
-    const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY) ; 
-
-    // Cursor scaling effect
-    const cursorScale = Math.max(minScale, maxScale - (distance / maxDistance) * (maxScale - minScale));
-
-    // Get base animation scale
-    const baseScale = parseFloat(el.dataset.baseScale) || 1;
-
-    // Combine both effects
-    el.style.transform = `scale(${baseScale * cursorScale})`;
-  });
-}
 
 const THRESHOLD = 20;
 
@@ -130,10 +106,10 @@ const zoom = (event) => {
 
   // Apply scale transform
   // mainHolder.style.transform = `scale(${scale})`;
-  mainHolder.animate({
-    transform: `scale(${scale})`,
-    opacity: scale - 0.5
-  }, { duration: 300, fill: 'forwards' })
+  // mainHolder.animate({
+  //   transform: `scale(${scale})`,
+  //   opacity: scale - 0.5
+  // }, { duration: 300, fill: 'forwards' })
 }
 document.onwheel = zoom;
 
@@ -161,13 +137,42 @@ window.onscroll = (event) => {
   console.log(event)
 }
 
-const GRID_SIZE = 15; // 10x10 grid
+const GRID_SIZE = 11; // 10x10 grid
 const MESSAGE_ROWS = {
   2: "WELCOME",
   6: "TO",
   7: "MY",
   10: "WORLD"
 };
+
+const elBbCache = [];
+
+const updateElementsScale = () => {
+  const maxDistance = 210; // threshold, change later
+  const minScale = 1;
+  const maxScale = 3;
+
+  const elements = document.querySelectorAll('.el');
+  elements.forEach((el, index) => {
+    const rect = el.getBoundingClientRect();
+    // const rect = elBbCache[index] ? elBbCache[index] : el.getBoundingClientRect();
+    const elCenterX = rect.left + rect.width / 2;
+    const elCenterY = rect.top + rect.height / 2;
+
+    const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY) ; 
+
+    // Cursor scaling effect
+    const cursorScale = Math.max(minScale, maxScale - (distance / maxDistance) * (maxScale - minScale));
+
+    // Get base animation scale
+    const baseScale = parseFloat(el.dataset.baseScale) || 1;
+
+    // Combine both effects
+    el.style.transform = `scale(${baseScale * cursorScale})`;
+
+    elBbCache[index] = rect;
+  });
+}
 
 window.onload = () => {
     const elementsHolder = document.getElementById('all-elements');
