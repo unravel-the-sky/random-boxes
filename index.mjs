@@ -120,14 +120,14 @@ window.onmousemove = (event) => {
   mouse.y = event.clientY;
 
   glowingCursor.style.left = `${mouse.x}px`
-  glowingCursor.style.top = `${mouse.y}px`
+  glowingCursor.style.top = `${mouse.y + window.scrollY}px`
 
   // glowingCursor.animate({
   //   left: `${mouse.x}px`,
   //   top: `${mouse.y}px`
   // }, { duration: 1000, fill: 'forwards'})
 
-  // console.log(`x: ${mouse.x} y: ${mouse.y}`)
+  console.log(`x: ${mouse.x} y: ${mouse.y}`)
 
   updateElementsScale();
   // highlightColumn();
