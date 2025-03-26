@@ -21,8 +21,25 @@ section {
   color: white;
 }
 
-#first {
-  /* justify-content: flex-start; */
+/* #first {
+  height: 200vh;
+} */
+
+#main {
+  display: block;
+  position: sticky;
+  top: 1rem;
+  /* animation: moveLeft 1s linear forwards; */
+  /* animation-timeline: scroll(root); */
+}
+
+@keyframes moveLeft {
+  0% {
+    scale: 1;
+  }
+  100% {
+    scale: 1.2;
+  }
 }
 
 .intro {
