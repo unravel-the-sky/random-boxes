@@ -142,7 +142,7 @@ section {
 .elements {
   display: flex;
   flex-wrap: wrap;
-  width: 800px;
+  width: 950px;
   perspective: 100px;
   font-family: "Fredericka the Great", serif;
   font-weight: 200;
@@ -157,7 +157,7 @@ section {
   color: rgb(175, 175, 175);
   font-size: 4rem;
   /* padding-bottom: 2rem; */
-  letter-spacing: 35px;
+  letter-spacing: 40px;
   line-height: 65px;
   /* width: 25px; */
   /* height: 25px; */
