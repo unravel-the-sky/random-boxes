@@ -169,6 +169,7 @@ const updateElementsScale = () => {
 
     // Combine both effects
     el.style.transform = `scale(${baseScale * cursorScale})`;
+    el.style.opacity = baseScale * cursorScale - 0.5;
 
     elBbCache[index] = rect;
   });

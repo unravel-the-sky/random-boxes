@@ -92,7 +92,7 @@ section {
 #motion-demo {
   offset-path: path("M-100,20 C20,1000 2000,0 200,100");
   animation: motion 6s infinite alternate ease-in-out;
-  animation-delay: 5s;
+  animation-delay: 3s;
   width: 140px;
   height: 140px;
   background: white;
