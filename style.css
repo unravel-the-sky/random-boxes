@@ -21,10 +21,6 @@ section {
   color: white;
 }
 
-/* #first {
-  height: 200vh;
-} */
-
 #main {
   display: block;
   position: sticky;
@@ -91,6 +87,31 @@ section {
   height: 100%;
   width: 100%;
   z-index: 2;
+}
+
+#motion-demo {
+  offset-path: path("M-100,20 C20,1000 2000,0 200,100");
+  animation: motion 6s infinite alternate ease-in-out;
+  animation-delay: 5s;
+  width: 140px;
+  height: 140px;
+  background: white;
+  filter: blur(100px) opacity(0.5);
+  opacity: 0;
+}
+
+@keyframes motion {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10%, 80% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
 }
 
 .elements-holder {
