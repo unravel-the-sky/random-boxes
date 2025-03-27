@@ -129,7 +129,7 @@ window.onmousemove = (event) => {
 
   console.log(`x: ${mouse.x} y: ${mouse.y}`)
 
-  // updateElementsScale();
+  updateElementsScale();
   // highlightColumn();
 }
 
@@ -159,7 +159,7 @@ const updateElementsScale = () => {
     const elCenterX = rect.left + rect.width / 2;
     const elCenterY = rect.top + rect.height / 2;
 
-    const distance = Math.hypot(temp.x - elCenterX, temp.y - elCenterY) ; 
+    const distance = Math.hypot(mouse.x - elCenterX, mouse.y - elCenterY) ; 
 
     // Cursor scaling effect
     const cursorScale = Math.max(minScale, maxScale - (distance / maxDistance) * (maxScale - minScale));
@@ -180,21 +180,21 @@ const element = document.getElementById("motion-demo");
 let start;
 const temp = { x: 0, y: 0 }
 
-function step(timestamp) {
-  if (start === undefined) {
-    start = timestamp;
-  }
-  const elapsed = timestamp - start;
+// function step(timestamp) {
+//   if (start === undefined) {
+//     start = timestamp;
+//   }
+//   const elapsed = timestamp - start;
 
-  // Math.min() is used here to make sure the element stops at exactly 200px
-  const rect = element.getBoundingClientRect();
-  temp.x = rect.x;
-  temp.y = rect.y;
-  updateElementsScale()
-  requestAnimationFrame(step);
-}
+//   // Math.min() is used here to make sure the element stops at exactly 200px
+//   const rect = element.getBoundingClientRect();
+//   temp.x = rect.x;
+//   temp.y = rect.y;
+//   updateElementsScale()
+//   requestAnimationFrame(step);
+// }
 
-requestAnimationFrame(step);
+// requestAnimationFrame(step);
 
 window.onload = () => {
     const elementsHolder = document.getElementById('all-elements');
